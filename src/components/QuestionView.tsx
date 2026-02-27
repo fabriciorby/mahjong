@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Tile } from './Tile';
 import { Question } from '../types';
 import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import { CheckCircle2, XCircle } from 'lucide-react';
 
 interface QuestionViewProps {
@@ -23,7 +25,10 @@ export const QuestionView: React.FC<QuestionViewProps> = ({ question }) => {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 my-8">
-      <h4 className="text-lg font-semibold text-slate-900 mb-6">{question.questionText}</h4>
+      <h4 
+        className="text-lg font-semibold text-slate-900 mb-6"
+        dangerouslySetInnerHTML={{ __html: question.questionText.replace(/([\uD83C][\uDC00-\uDC2B]\uFE0E?)+/g, '<span class="mahjong-tile">$&</span>') }}
+      />
       
       <div className="flex flex-wrap gap-1 mb-8 p-6 bg-slate-50 rounded-xl border border-slate-100 justify-center">
         {question.hand.map((tile, idx) => (
@@ -58,7 +63,12 @@ export const QuestionView: React.FC<QuestionViewProps> = ({ question }) => {
             </div>
             
             <div className="prose prose-slate max-w-none">
-              <Markdown>{question.explanation}</Markdown>
+              <Markdown 
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+              >
+                {question.explanation.replace(/([\uD83C][\uDC00-\uDC2B]\uFE0E?)+/g, '<span class="mahjong-tile">$&</span>')}
+              </Markdown>
             </div>
             
             <button

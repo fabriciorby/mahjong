@@ -1,2 +1,12 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+.mahjong-tile {
+  font-family: "Noto Sans Symbols 2", "PingFang SC", "Hiragino Sans", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  font-variant-emoji: text;
+  font-size: 2em;
+  line-height: 1;
+  vertical-align: -0.15em;
+  display: inline-block;
+  margin: 0 0.05em;
+}
